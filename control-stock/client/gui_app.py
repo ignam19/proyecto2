@@ -31,16 +31,16 @@ class Frame(tk.Frame):
         #ENTRYS DE LABELS
         self.entry_codigo = tk.Entry(self)
         self.entry_codigo.config(width= 50, font= ('Arial', 12))
-        self.entry_codigo.grid(row= 0, column= 1)
+        self.entry_codigo.grid(row= 0, column= 1, padx= 5, pady= 5)
         
         self.entry_articulo = tk.Entry(self)
         self.entry_articulo.config(width= 50, font= ('Arial', 12))
-        self.entry_articulo.grid(row= 1, column= 1)
+        self.entry_articulo.grid(row= 1, column= 1, padx= 5, pady= 5)
         
         self.entry_stock = tk.Entry(self)
         self.entry_stock.config(width= 50, font= ('Arial', 12))
-        self.entry_stock.grid(row= 2, column= 1)
+        self.entry_stock.grid(row= 2, column= 1, padx= 5, pady= 5)
         
         self.entry_precio = tk.Entry(self)
         self.entry_precio.config(width= 50, font= ('Arial', 12))
-        self.entry_precio.grid(row= 3, column= 1)
+        self.entry_precio.grid(row= 3, column= 1, padx= 5, pady= 5)
