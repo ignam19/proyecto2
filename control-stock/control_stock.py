@@ -1,9 +1,11 @@
 import tkinter as tk
-from client.gui_app import Frame
+from client.gui_app import Frame, barra_menu
 
 def main():
     root = tk.Tk()
     root.title('Control Stock  -Mecanica Mersch-')
+    
+    barra_menu(root)
     
     app = Frame(root= root)
     
