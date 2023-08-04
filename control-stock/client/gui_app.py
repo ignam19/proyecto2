@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from tkinter import ttk
-from model.repuestos_dao import crear_tabla, borrar_tabla
+from model.repuestos_dao import crear_tabla, borrar_tabla, Repuesto, guardar
 
 def barra_menu(root):
     barra_menu = tk.Menu(root)
@@ -22,11 +22,6 @@ class Frame(tk.Frame):
         self.pack()
         
         self.campos_repuestos()
-        
-        self.guardar()
-        self.limpiar()
-        self.modificar()
-        self.eliminar()
         
         self.tabla_repuestos()
         
@@ -93,6 +88,14 @@ class Frame(tk.Frame):
         
     def guardar(self):
         
+        repuesto = Repuesto(
+            self.mi_codigo.get(),
+            self.mi_articulo.get(),
+            self.mi_stock.get(),
+            self.mi_precio.get()
+        )
+        
+        guardar(repuesto)
         
         #Limpiar campos
         self.limpiar()
