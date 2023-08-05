@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from tkinter import ttk
-from model.repuestos_dao import crear_tabla, borrar_tabla, Repuesto, guardar
+from model.repuestos_dao import crear_tabla, borrar_tabla, Repuesto, guardar, listar
 
 def barra_menu(root):
     barra_menu = tk.Menu(root)
@@ -97,6 +97,8 @@ class Frame(tk.Frame):
         
         guardar(repuesto)
         
+        self.tabla_repuestos()
+        
         #Limpiar campos
         self.limpiar()
         
@@ -114,12 +116,26 @@ class Frame(tk.Frame):
     
     def tabla_repuestos(self):
         
+        self.lista_repuestos = listar()
+        self.lista_repuestos.reverse()
+        
         self.tabla = ttk.Treeview(self,
         columns= ('Codigo', 'Articulo', 'Stock', 'Precio'))
-        self.tabla.grid(row= 4, column= 0, columnspan= 5)
+        self.tabla.grid(row= 4, column= 0, columnspan= 5, sticky= 'nse')
+        
+        #Scrollbar
+        self.scroll = ttk.Scrollbar(self, 
+        orient= 'vertical', command= self.tabla.yview)
+        self.scroll.grid(row= 4, column= 5, sticky= 'nse') 
+        self.tabla.configure(yscrollcommand= self.scroll.set)
         
         self.tabla.heading('#0', text= 'ID')
         self.tabla.heading('#1', text= 'CODIGO')
         self.tabla.heading('#2', text= 'ARTICULO')
         self.tabla.heading('#3', text= 'STOCK')
         self.tabla.heading('#4', text= 'PRECIO')
+        
+        #Iterador de lista
+        for p in self.lista_repuestos:
+            self.tabla.insert('', 0, text= p[0],
+            values= (p[1], p[2], p[3], p[4]))

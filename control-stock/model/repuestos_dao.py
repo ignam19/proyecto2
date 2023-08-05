@@ -69,3 +69,24 @@ def guardar(repuesto):
         titulo = 'Conexion Registro'
         mensaje = 'No se ha podido insertar la tabla, el registro no existe.'
         messagebox.showerror(titulo, mensaje)
+        
+
+def listar():
+    
+    conexion = ConexionDB()
+    
+    lista_repuestos = []
+    
+    sql = 'SELECT * FROM repuestos'
+    
+    try:
+        conexion.cursor.execute(sql)
+        lista_repuestos = conexion.cursor.fetchall()
+        conexion.cerrar()
+    except:
+        titulo = 'Conexion al registro'
+        mensaje = 'Debes crear una tabla en la base de datos.'
+        messagebox.showwarning(titulo, mensaje)
+        
+        
+    return lista_repuestos
