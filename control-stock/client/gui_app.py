@@ -1,8 +1,7 @@
 # ESTO ES EL INTERFACE DE USUARIO
-
 import tkinter as tk
-from tkinter import ttk
-from model.repuestos_dao import crear_tabla, borrar_tabla, Repuesto, guardar, listar
+from tkinter import ttk, messagebox
+from model.repuestos_dao import crear_tabla, borrar_tabla, Repuesto, guardar, listar, editar, eliminar
 
 def barra_menu(root):
     barra_menu = tk.Menu(root)
@@ -20,10 +19,13 @@ class Frame(tk.Frame):
         super().__init__(root, width= 480, height= 320)
         self.root = root
         self.pack()
+        self.id_repuesto = None
         
         self.campos_repuestos()
         
         self.tabla_repuestos()
+        
+       
         
     def campos_repuestos(self):
         #LABEL DE CADA CAMPO
@@ -80,7 +82,7 @@ class Frame(tk.Frame):
                                 fg= '#DAD5D6', bg= '#F6AA3D', cursor= 'hand2')
         self.boton_modificar.grid(row= 2, column= 2, padx= 10, pady= 10)
         
-        self.boton_eliminar = tk.Button(self, text= 'Eliminar', command= self.eliminar)
+        self.boton_eliminar = tk.Button(self, text= 'Eliminar', command= self.eliminar_datos)
         self.boton_eliminar.config(width= 20, font= ('Arial', 12, 'bold'),
                                 fg= '#DAD5D6', bg= '#FF1F4C', cursor= 'hand2')
         self.boton_eliminar.grid(row= 3, column= 2, padx= 10, pady= 10)
@@ -95,24 +97,23 @@ class Frame(tk.Frame):
             self.mi_precio.get()
         )
         
-        guardar(repuesto)
+        if self.id_repuesto == None:
+            guardar(repuesto)
+        else:
+            editar(repuesto, self.id_repuesto)
         
         self.tabla_repuestos()
-        
+            
         #Limpiar campos
         self.limpiar()
         
     def limpiar(self):
+        self.id_repuesto = None
         self.mi_codigo.set('')
         self.mi_articulo.set('')
         self.mi_stock.set('')
         self.mi_precio.set('')
-        
-    def modificar(self):
-        pass
-        
-    def eliminar(self):
-        pass
+            
     
     def tabla_repuestos(self):
         
@@ -139,3 +140,49 @@ class Frame(tk.Frame):
         for p in self.lista_repuestos:
             self.tabla.insert('', 0, text= p[0],
             values= (p[1], p[2], p[3], p[4]))
+            
+    def modificar(self):
+        
+        try:
+            #Recuperar los datos de la tabla
+            self.id_repuesto = self.tabla.item(
+                self.tabla.selection())['text']
+            self.codigo_repuesto = self.tabla.item(
+                self.tabla.selection())['values'][0]
+            self.articulo_repuesto = self.tabla.item(
+                self.tabla.selection())['values'][1]
+            self.stock_repuesto = self.tabla.item(
+                self.tabla.selection())['values'][2]
+            self.precio_repuesto = self.tabla.item(
+                self.tabla.selection())['values'][3]
+            
+            
+            #Cargar los entrys
+            self.entry_codigo.insert(0, self.codigo_repuesto)
+            self.entry_articulo.insert(0, self.articulo_repuesto)
+            self.entry_stock.insert(0, self.stock_repuesto)
+            self.entry_precio.insert(0, self.precio_repuesto)  
+            
+            
+              
+            
+        except:
+            titulo = 'Edicion de datos'
+            mensaje = 'No ha seleccionado ningun registro.'
+            messagebox.showerror(titulo, mensaje)
+            
+            
+    def eliminar_datos(self):
+        
+        try:
+            self.id_repuesto = self.tabla.item(
+                self.tabla.selection())['text']
+            eliminar(self.id_repuesto)
+            
+            self.tabla_repuestos()
+            self.id_repuesto = None
+        except:
+            titulo = 'Eliminacion de datos'
+            mensaje = 'No ha seleccionado ningun registro..'
+            messagebox.showerror(titulo, mensaje)
+        
